@@ -58,7 +58,7 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif event.key == pygame.K_p:
+        elif event.key == pygame.K_p and not self.stats.game_active:
             self._start_game()
 
     def _check_keyup_events(self, event):
@@ -75,7 +75,8 @@ class AlienInvasion:
 
     def _start_game(self):
         """Reset game stats and clears the screen for a fresh start."""
-        # Reset the game statistics.
+        # Reset the game settings and statistics.
+        self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.stats.game_active = True
 
@@ -107,7 +108,6 @@ class AlienInvasion:
 
         self._check_bullet_alien_collisions()
 
-
     def _check_bullet_alien_collisions(self):
         """"Respond to bullet-alien collisions."""
         # Check for any bullets that have hit aliens.
@@ -119,6 +119,7 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _create_fleet(self):
         """Create the fleet of aliens."""
