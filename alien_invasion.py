@@ -38,6 +38,29 @@ class AlienInvasion:
         # Make the Play button.
         self.play_button = Button(self, "Play")
 
+        # Make the difficulty buttons.
+        self._make_difficulty_buttons()
+
+    def _make_difficulty_buttons(self):
+        """Create buttons to allow the player to select the difficulty."""
+        self.easy_button = Button(self, "Easy")
+        self.normal_button = Button(self, "Normal")
+        self.hard_button = Button(self, "Hard")
+
+        # Adjust button positioning.
+        self.easy_button.rect.top = (
+            self.play_button.rect.top + 1.5 * self.play_button.rect.height)
+        self.easy_button.msg_image_rect.center = self.easy_button.rect.center
+
+        self.normal_button.rect.top = (
+                self.easy_button.rect.top + 1.5 * self.play_button.rect.height)
+        self.normal_button.msg_image_rect.center = (
+                self.normal_button.rect.center)
+
+        self.hard_button.rect.top = (
+            self.normal_button.rect.top + 1.5 * self.play_button.rect.height)
+        self.hard_button.msg_image_rect.center = self.hard_button.rect.center
+
     def _check_events(self):
         # Watch for keyboard and mouse events.
         for event in pygame.event.get():
@@ -50,6 +73,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_difficulty_buttons(mouse_pos)
 
     def _check_keydown_events(self, event):
         # Respond to key presses.
@@ -76,6 +100,20 @@ class AlienInvasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
             self._start_game()
+
+    def _check_difficulty_buttons(self, mouse_pos):
+        """Set the appropriate difficulty level."""
+        easy_button_clicked = self.easy_button.rect.collidepoint(mouse_pos)
+        normal_button_clicked = self.normal_button.rect.collidepoint(mouse_pos)
+        hard_button_clicked = self.hard_button.rect.collidepoint(mouse_pos)
+        if easy_button_clicked:
+            self.settings.difficulty_level = "Easy"
+        elif normal_button_clicked:
+            self.settings.difficulty_level = "Normal"
+        elif hard_button_clicked:
+            self.settings.difficulty_level = "Hard"
+        if not self.stats.game_active:
+            print(f"{self.settings.difficulty_level} difficulty selected.")
 
     def _start_game(self):
         """Reset game stats and clears the screen for a fresh start."""
@@ -232,6 +270,9 @@ class AlienInvasion:
         # Draw the play button if the game is inactive.
         if not self.stats.game_active:
             self.play_button.draw_button()
+            self.easy_button.draw_button()
+            self.normal_button.draw_button()
+            self.hard_button.draw_button()
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()
