@@ -114,6 +114,9 @@ class AlienInvasion:
             self.settings.difficulty_level = "Hard"
         if not self.stats.game_active:
             print(f"{self.settings.difficulty_level} difficulty selected.")
+            self.settings.initialize_dynamic_settings()
+            self.stats.reset_stats()
+            self.sb.prep_ships()
 
     def _start_game(self):
         """Reset game stats and clears the screen for a fresh start."""
