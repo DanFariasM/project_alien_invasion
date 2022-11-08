@@ -207,7 +207,8 @@ class AlienInvasion:
         alien_width, alien_height = alien.rect.size
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x
-        alien.rect.y = self.sb.level_rect.bottom + 10 + 2 * alien_height * row_number
+        alien.rect.y = (self.sb.level_rect.bottom + 10 + 
+                        2 * alien_height * row_number)
         self.aliens.add(alien)
 
     def _check_fleet_edges(self):
