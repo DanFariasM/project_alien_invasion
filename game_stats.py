@@ -1,3 +1,5 @@
+import json
+
 class GameStats:
     """Track statistics for Alien Invasion."""
 
@@ -18,13 +20,19 @@ class GameStats:
         self.score = 0
         self.level = 1
 
+    def save_high_score(self):
+        """Creating / updating a file with the all time high score."""
+        filename = "high_score.json"
+        with open (filename, "w") as hs_file_object:
+            json.dump(self.high_score, hs_file_object)
+
     def retrieve_high_score(self):
         """Retrieving the all time high score, except for 1st time players.
         1st time players will start with a 0 high score."""
         try:
-            filename = "high_score.txt"
-            with open(filename) as file_object:
-                self.high_score = int(file_object.read())
+            filename = "high_score.json"
+            with open(filename) as hs_file_object:
+                self.high_score = json.load(hs_file_object)
         except FileNotFoundError:
             self.high_score = 0
 

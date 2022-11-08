@@ -65,7 +65,7 @@ class AlienInvasion:
         # Watch for keyboard and mouse events.
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.save_high_score()
+                self.stats.save_high_score()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -84,7 +84,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            self.save_high_score()
+            self.stats.save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -268,12 +268,6 @@ class AlienInvasion:
                 # Treat this the same as if the ship got hit.
                 self._ship_hit()
                 break
-
-    def save_high_score(self):
-        """Creating / updating a file with the all time high score."""
-        filename = "high_score.txt"
-        with open (filename, "w") as file_object:
-            file_object.write(str(self.stats.high_score))
 
     def _update_screen(self):
         # Redraw the screen during each pass through the loop.
